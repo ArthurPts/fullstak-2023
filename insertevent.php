@@ -19,22 +19,22 @@
             $tanggal = $_POST['txttanggal'];
             $keterangan = $_POST['txtketerangan'];
             $jenis = $_POST['rad_jenis'];
-            
-            $judul_slug = strtolower(preg_replace('/[^A-Za-z0-9-]+/', '-', $judul));
+            $judul_slug = $_POST['txtslug'];
+            $eventID = $objEvent->generateEventID();
 
             $poster_extension = '';
             $upload_success = true;
-            $uploadDir = 'posters/'; 
+            $uploadDir = 'gambar/event/'; 
 
             if (isset($_FILES['fileposter']) && $_FILES['fileposter']['error'] == 0) {
-                $fileInfo = pathinfo($_FILES['fileposter']['name']);
+                $fileInfo = pathinfo($_FILES['fileposter']['name']); 
                 $poster_extension = strtolower($fileInfo['extension']);
                 
                 if (strlen($poster_extension) > 4) {
                      $message = "<div class='error'>Ekstensi file terlalu panjang!</div>";
                      $upload_success = false;
                 } else {
-                    $temp_file_name = $judul_slug . '-' . time() . '.' . $poster_extension;
+                    $temp_file_name = $eventID . '.' . $poster_extension; //nama file bermasalah nanti
                     $uploadPath = $uploadDir . $temp_file_name;
                     
                     if (!move_uploaded_file($_FILES['fileposter']['tmp_name'], $uploadPath)) {
@@ -112,11 +112,16 @@
             <?php echo $message; ?>
             
             <form method="post" action="insertevent.php" enctype="multipart/form-data" onsubmit="return validateForm()">
-                <input type="hidden" name="txtidevent" value="<?php echo $_GET['id']; ?>">
+                <input type="hidden" name="txtidgrup" value="<?php echo $_GET['id']; ?>">
                 
                 <div>
                     <label for="judul">Judul Event:</label>
                     <input type="text" id="judul" name="txtjudul" maxlength="45" required>
+                </div>
+
+                <div>
+                    <label for="judul">Judul slug:</label>
+                    <input type="text" id="slug" name="txtslug" maxlength="45" required >
                 </div>
 
                 <div>

@@ -36,7 +36,8 @@
             $poster_extension_baru = $poster_extension_lama; 
 
             $upload_success = true;
-            $uploadDir = 'posters/event/'; 
+            
+            $uploadDir = 'gambar/event/'; 
             $temp_file_name = '';
 
             if (isset($_FILES['fileposter']) && $_FILES['fileposter']['error'] == 0) {
@@ -158,6 +159,12 @@
                     <label for="judul">Judul Event:</label>
                     <input type="text" id="judul" name="txtjudul" maxlength="45" required 
                            value="<?php echo htmlspecialchars($dataEvent['judul']); ?>">
+                </div>
+
+                <div>
+                    <label for="judul">Judul slug:</label>
+                    <input type="text" id="slug" name="txtslug" maxlength="45" required 
+                           value="<?php echo htmlspecialchars($dataEvent['judul-slug']); ?>">
                 </div>
 
                 <div>

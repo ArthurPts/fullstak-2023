@@ -55,4 +55,24 @@ class event extends connection
         $stmt->bind_param('ssssssi', $pJudul, $pSlug, $pTanggal, $pKeterangan, $pJenis, $pPosterExt, $pIdEvent);
         return $stmt->execute();
     }
+
+    public function generateEventId()
+    {
+        // Query untuk mengambil ID terakhir
+        $sql = "SELECT idevent FROM event ORDER BY idevent DESC LIMIT 1";
+        $stmt = $this->con->prepare($sql);
+        $stmt->execute();
+        $stmt->bind_result($lastId);
+        $stmt->fetch();
+        $stmt->close();
+
+        // Jika masih kosong, mulai dari 1
+        if ($lastId === null) {
+            return 1;
+        }
+
+        // Kembalikan ID terakhir + 1 (jika ingin ID baru)
+        return $lastId + 1;
+    }
 }
+?>
