@@ -100,6 +100,9 @@ $kode = $info['kode_pendaftaran'];
                                     <a href="editevent.php?id=' . $event['idevent'] . '">
                                         Edit
                                     </a>
+                                    <a href="delevent.php?id=' . $event['idevent'] . '">
+                                        Delete
+                                    </a>
                                 </td>
                             </tr>';
                     }

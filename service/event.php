@@ -33,7 +33,7 @@ class event extends connection
 
     public function insertEvent($pIdGrup, $pJudul, $pSlug, $pTanggal, $pKeterangan, $pJenis, $pPosterExt)
     {
-        $sql = "INSERT INTO event(idgrup, judul, judul-slug, tanggal, keterangan, jenis, poster_extension) VALUES(?,?,?,?,?,?,?)";
+        $sql = "INSERT INTO event(idgrup, judul, `judul-slug`, tanggal, keterangan, jenis, poster_extension) VALUES(?,?,?,?,?,?,?)";
         $stmt = $this->con->prepare($sql);
         $stmt->bind_param('issssss', $pIdGrup, $pJudul, $pSlug, $pTanggal, $pKeterangan, $pJenis, $pPosterExt);
         return $stmt->execute();
