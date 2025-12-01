@@ -2,7 +2,7 @@
 session_start();
 include_once('service/grup.php');
 include_once('service/event.php');
-$isDosen = ($_SESSION['username'][0] === 'D');
+
 $objGrup = new grup();
 $objEvent = new event();
 
@@ -14,13 +14,13 @@ if (!isset($_SESSION['login'])) {
 $result = $objGrup->getGrupInfoDetail($_GET['id']);
 $info = $result->fetch_assoc();
 
-// Ini semua nanti diganti hasil query
 $namaGrup = $info['nama'];
 $deskripsi = $info['deskripsi'];
 $pembuat = $info['namaPembuat'];
 $tanggalPembentukan = $info['tanggal_pembentukan'];
 $jenis = $info['jenis'];
 $kode = $info['kode_pendaftaran'];
+$isPembuat = ($_SESSION['username'] == $info['username_pembuat']);
 ?>
 
 <!DOCTYPE html>
@@ -74,9 +74,12 @@ $kode = $info['kode_pendaftaran'];
                     <tr>
                         <th colspan="2">Event</th>
                     </tr>
-                    <tr>
-                        <th colspan="2"><a style="color:green;" href="insertevent.php?id=<?= $_GET['id'] ?>">Tambah Event</a></th>
-                    </tr>
+                    <?php if ($isPembuat) { ?>
+                        <tr>
+                            <th colspan="2"><a style="color:green;" href="insertevent.php?id=<?= $_GET['id'] ?>">Tambah Event</a></th>
+                        </tr>
+                    <?php } ?>
+                    
                     <!-- diloop berdasarkan data event -->
                     <?php
                     $result = $objEvent->getGrupEvent($_GET['id']);
@@ -94,17 +97,20 @@ $kode = $info['kode_pendaftaran'];
                                             Jenis: ' . $event['jenis'] . '
                                         </div>
                                     </div>
-                                </td>
+                                </td>';
 
-                                <td style="width: 1rem;">
-                                    <a href="editevent.php?id=' . $event['idevent'] . '">
-                                        Edit
-                                    </a>
-                                    <a href="delevent.php?id=' . $event['idevent'] . '">
-                                        Delete
-                                    </a>
-                                </td>
-                            </tr>';
+                            if($isPembuat){
+                                echo '
+                                    <td style="width: 1rem;">
+                                        <a href="editevent.php?id=' . $event['idevent'] . '">
+                                            Edit
+                                        </a>
+                                        <a href="delevent.php?id=' . $event['idevent'] . '">
+                                            Delete
+                                        </a>
+                                    </td>';
+                            }
+                        echo'</tr>';
                     }
                     ?>
                     <tr>
@@ -116,12 +122,17 @@ $kode = $info['kode_pendaftaran'];
             <div style="width: 100%;">
                 <table border="1" style="margin: 0 auto; ">
                     <tr>
-                        <th <?php if($isDosen) echo "colspan='2'"; ?> >Anggota</th>
+                        <th colspan='2' >Anggota</th>
                     </tr>
+                    <?php if ($isPembuat) { ?>
+                        <tr>
+                            <th colspan="2"><a style="color:green;" href="insertmember.php?id=<?= $_GET['id'] ?>">Tambah Anggota</a></th>
+                        </tr>
+                    <?php } ?>
                     <!-- diloop berdasarkan data anggota -->
                     <?php
                     $result = $objGrup->getMemberList($_GET['id']);
-                    if ($isDosen){
+                    if ($isPembuat){
                         while ($member = $result->fetch_assoc()) {
                             echo '<tr >
                                     <td>' . $member['username'] . '</td>

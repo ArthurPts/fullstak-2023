@@ -118,8 +118,11 @@ class akun extends connection
         $result = $stmt->get_result();
         $kodeAsli = $result->fetch_assoc();
 
+        if (!$kodeAsli) {
+            return false; // group not found
+        }
 
-        if($kodeDaftar == $kodeAsli){
+        if($kodeDaftar == $kodeAsli['kode_pendaftaran']){
 
             $sql = "INSERT INTO member_grup(username, idgrup) VALUES(?,?)";
             $stmt = $this->con->prepare($sql);

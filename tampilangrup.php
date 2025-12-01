@@ -55,7 +55,7 @@ $isMahasiswa = ($_SESSION['username'][0] === 'M');
 
         if (isset($_GET['search'])) {
             $jumlahData = $objGrup->getAllGrup()->num_rows;
-            $result = $objGrup->getGrupLimit($start, $perpage, $_SESSION['username']);
+            $result = $objGrup->getGrupLimit( $_SESSION['username'], $start, $perpage);
         } elseif (isset($_GET['list'])) {
             $jumlahData = $objAkun->getGrupList($_SESSION['username'])->num_rows;
             $result = $objAkun->getGrupLimit($_SESSION['username'], $start, $perpage); //data yang didapat adalah data diaman user adalah member grup, BUKAN PEMBUAT GRUP
@@ -131,21 +131,19 @@ $isMahasiswa = ($_SESSION['username'][0] === 'M');
                     <a href="detilgrup.php?id=' . $grup['idgrup'] . '"><button>Lihat Detail</button></a>
                     ';
 
-            if (isset($grup['anggota']) && $grup['anggota'] != NULL) {
                 if ($_SESSION['username'] == $grup['username_pembuat']) {
                     echo '<a href="delgrup.php?id=' . $grup['idgrup'] . ' ">
                                     <button style="color:red;" onclick="return confirm(\'Yakin membubarkan grup ini?\');">Bubarkan Grup</button>
                                 </a>';
-                } else {
+                } elseif ((isset($grup['anggota']) && $grup['anggota'] != NULL) || $type == "list") {
                     echo '<a href="delgrup.php?id=' . $grup['idgrup'] . '&user=' . $_SESSION['username'] . ' ">
                                     <button style="color:red;" onclick="return confirm(\'Yakin keluar grup ini?\');">Keluar Grup</button>
                             </a>';
+                } else {
+                    echo '<a href="joingrup.php?id=' . $grup['idgrup'] . '&namaGrup=' . $grup['nama'] . '">
+                                <button style="color:red;">Join Grup</button>
+                            </a>';
                 }
-            } else {
-                echo '<a href="joingrup.php?id=' . $grup['idgrup'] . '&namaGrup=' . $grup['nama'] . '">
-                            <button style="color:red;">Join Grup</button>
-                        </a>';
-            }
 
             echo '
                 </div>

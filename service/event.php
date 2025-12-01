@@ -36,7 +36,11 @@ class event extends connection
         $sql = "INSERT INTO event(idgrup, judul, `judul-slug`, tanggal, keterangan, jenis, poster_extension) VALUES(?,?,?,?,?,?,?)";
         $stmt = $this->con->prepare($sql);
         $stmt->bind_param('issssss', $pIdGrup, $pJudul, $pSlug, $pTanggal, $pKeterangan, $pJenis, $pPosterExt);
-        return $stmt->execute();
+        if ($stmt->execute()) {
+            return $this->con->insert_id;   // ← return the new inserted ID
+        } else {
+            return false; // or handle error
+        }
     }
 
     public function deleteEvent($pIdEvent)
@@ -50,7 +54,7 @@ class event extends connection
 
     public function updateEvent($pIdEvent, $pJudul, $pSlug, $pTanggal, $pKeterangan, $pJenis, $pPosterExt)
     {
-        $sql = "UPDATE event SET judul=?, judul-slug=?, tanggal=?, keterangan=?, jenis=?, poster_extension=? WHERE idevent=?";
+        $sql = "UPDATE event SET judul=?, `judul-slug`=?, tanggal=?, keterangan=?, jenis=?, poster_extension=? WHERE idevent=?";
         $stmt = $this->con->prepare($sql);
         $stmt->bind_param('ssssssi', $pJudul, $pSlug, $pTanggal, $pKeterangan, $pJenis, $pPosterExt, $pIdEvent);
         return $stmt->execute();

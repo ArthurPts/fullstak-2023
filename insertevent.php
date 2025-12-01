@@ -14,64 +14,44 @@
     
     $message = '';
     if (isset($_POST['submit'])) {
-            $idgrup = $_POST['txtidgrup'];
-            $judul = $_POST['txtjudul'];
-            $tanggal = $_POST['txttanggal'];
-            $keterangan = $_POST['txtketerangan'];
-            $jenis = $_POST['rad_jenis'];
-            $judul_slug = $_POST['txtslug'];
-            $eventID = $objEvent->generateEventID();
+        $idgrup = $_POST['txtidgrup'];
+        $judul = $_POST['txtjudul'];
+        $tanggal = $_POST['txttanggal'];
+        $keterangan = $_POST['txtketerangan'];
+        $jenis = $_POST['rad_jenis'];
+        $judul_slug = $_POST['txtslug'];
 
-            $poster_extension = '';
-            $upload_success = true;
-            $uploadDir = 'gambar/event/'; 
+        $poster_extension = '';
+        $upload_success = true;
+        $uploadDir = 'gambar/event/'; 
 
-            if (isset($_FILES['fileposter']) && $_FILES['fileposter']['error'] == 0) {
-                $fileInfo = pathinfo($_FILES['fileposter']['name']); 
-                $poster_extension = strtolower($fileInfo['extension']);
-                
-                if (strlen($poster_extension) > 4) {
-                     $message = "<div class='error'>Ekstensi file terlalu panjang!</div>";
-                     $upload_success = false;
-                } else {
-                    $temp_file_name = $eventID . '.' . $poster_extension; //nama file bermasalah nanti
-                    $uploadPath = $uploadDir . $temp_file_name;
-                    
-                    if (!move_uploaded_file($_FILES['fileposter']['tmp_name'], $uploadPath)) {
-                        $message = "<div class='error'>Gagal mengunggah file poster!</div>";
-                        $upload_success = false;
-                    }
-                }
-            } else if (isset($_FILES['fileposter']) && $_FILES['fileposter']['error'] !== 4) {
-                 $message = "<div class='error'>Terjadi kesalahan unggahan file: Error " . $_FILES['fileposter']['error'] . "</div>";
-                 $upload_success = false;
+        if (isset($_FILES['fileposter']) && $_FILES['fileposter']['error'] == 0) {
+
+            $fileInfo = pathinfo($_FILES['fileposter']['name']); 
+            $poster_extension = strtolower($fileInfo['extension']);
+
+            $eventID = $objEvent->insertEvent(
+                $idgrup,
+                $judul,
+                $judul_slug,
+                $tanggal,
+                $keterangan,
+                $jenis,
+                $poster_extension
+            );
+
+            $temp_file_name = $eventID . '.' . $poster_extension;
+            $uploadPath = $uploadDir . $temp_file_name;
+
+            if (!move_uploaded_file($_FILES['fileposter']['tmp_name'], $uploadPath)) {
+                die("Failed to upload file!");
             }
 
-            if ($upload_success) {
-                if($objEvent->insertEvent(
-                    $idgrup,
-                    $judul,
-                    $judul_slug,
-                    $tanggal,
-                    $keterangan,
-                    $jenis,
-                    $poster_extension
-                )){
-                    
-                    echo "<script>
-                        alert('Event berhasil dibuat!');
-                        window.location.href = 'index.php'; 
-                    </script>";
-                }
-                else {
-                    if ($poster_extension != '' && file_exists($uploadPath)) {
-                        unlink($uploadPath);
-                    }
-                    $message = "<div class='error'>Event gagal dibuat! Terjadi kesalahan database.</div>";
-                }
-            }
+            echo "<script>alert('Event berhasil dibuat!');</script>";
+        }
+        header("Location: detilgrup.php?id=" . $idgrup);
+        exit();
     }
-    
     $tglDefault = date("Y-m-d\TH:i");
 ?>
 
@@ -109,7 +89,6 @@
     <div class="style">
         <div class="container">
             <h2>Buat Event Baru</h2>
-            <?php echo $message; ?>
             
             <form method="post" action="insertevent.php" enctype="multipart/form-data" onsubmit="return validateForm()">
                 <input type="hidden" name="txtidgrup" value="<?php echo $_GET['id']; ?>">

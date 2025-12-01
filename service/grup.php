@@ -134,5 +134,14 @@ class grup extends connection
         $stmt->bind_param('ssss', $pNama, $pDeskripsi, $pJenis, $pIdGrup);
         return $stmt->execute();
     }
+    
+    public function nonMemberList($idGrup){
+        $sql = "SELECT * FROM akun a WHERE a.username NOT IN (SELECT m.username FROM member_grup m WHERE m.idgrup = ?)";
+        $stmt = $this->con->prepare($sql);
+        $stmt->bind_param('i', $idGrup);
+        $stmt->execute();
+        return $stmt->get_result();
+    }
+
 
 }

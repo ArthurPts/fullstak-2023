@@ -6,7 +6,7 @@
         exit();
     } 
     
-    if($_SERVER['REQUEST_METHOD'] === 'POST'){
+    if(isset($_POST['submit'])){
         include_once('service/akun.php');
         $objakun= new akun();
 
@@ -54,7 +54,7 @@
                     <label for="kodePendaftaran">Kode pendaftaran:</label>
                     <input type="text" id="kodePendaftaran" name="txtKodePendaftaran" required >
                 </div>
-                <input type="hidden" name="idGrup" value="<?php $idGrup; ?>">
+                <input type="hidden" name="idGrup" value="<?php echo $idGrup; ?>">
 
                 <input type="submit" name="submit" value="Gabung">
             </form>
