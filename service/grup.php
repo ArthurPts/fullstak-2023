@@ -62,10 +62,10 @@ class grup extends connection
         return $stmt->execute();
     }
 
-    public function addMember($pNomor, $pIdGrup){  //! ini untuk admin atau dosen yang mau edit - edit gitu || PAKE NOMOR KARENA SEARCHNYA PAKE NPK ATAU NRP => SESUAI DOCS
-        $sql = "INSERT INTO member_grup(username, idgrup) VALUES( (SELECT username FROM akun WHERE CONCAT(nrp_mahasiswa, npk_dosen) LIKE ?,?)";
+    public function addMember($pUsername, $pIdGrup){  //! ini untuk admin atau dosen yang mau edit - edit gitu || PAKE NOMOR KARENA SEARCHNYA PAKE NPK ATAU NRP => SESUAI DOCS
+        $sql = "INSERT INTO member_grup(username, idgrup) VALUES(?,?)";
         $stmt = $this->con->prepare($sql);
-        $stmt->bind_param("si", '%'.$pNomor.'%', $pIdGrup);
+        $stmt->bind_param("si", $pUsername, $pIdGrup);
         return $stmt->execute();
     }
 
@@ -136,7 +136,20 @@ class grup extends connection
     }
     
     public function nonMemberList($idGrup){
-        $sql = "SELECT * FROM akun a WHERE a.username NOT IN (SELECT m.username FROM member_grup m WHERE m.idgrup = ?)";
+        $sql = "SELECT 
+                a.username,
+                COALESCE(a.nrp_mahasiswa, a.npk_dosen) AS nomor,
+                COALESCE(m.nama, d.nama) AS nama
+
+                FROM akun a
+                LEFT JOIN mahasiswa m ON m.nrp = a.nrp_mahasiswa
+                LEFT JOIN dosen d ON d.npk = a.npk_dosen
+
+                WHERE a.username NOT IN (
+                    SELECT username 
+                    FROM member_grup 
+                    WHERE idgrup = ?
+                );";
         $stmt = $this->con->prepare($sql);
         $stmt->bind_param('i', $idGrup);
         $stmt->execute();

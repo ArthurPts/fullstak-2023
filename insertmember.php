@@ -32,13 +32,19 @@ $nonMember = $result->fetch_assoc();
         <div style="width: 50%;">
             <table border="1" style="margin: 0 auto; ">
                 <tr>
-                    <th colspan='2' >Daftar Non-Anggota</th>
+                    <th colspan='3' >Daftar Non-Anggota</th>
+                </tr>
+                <tr>
+                    <th>nrp/npk</td=>
+                    <th>nama</td=>
+                    <th>aksi</td=>
                 </tr>
                 <?php
                     while ($nonMember = $result->fetch_assoc()) {
                         echo '<tr >
-                                <td>' . $nonMember['username'] . '</td>
-                                <td style="width: 5rem;"> <a href="delgrup.php?user=' . $nonMember['username'] . '&id=' . $_GET['id'] . ');">Tambahkan ke grup</a> </td>
+                                <td>' . $nonMember['nomor'] . '</td>
+                                <td>' . $nonMember['nama'] . '</td>
+                                <td style="width: 5rem;"> <a href="insertmember_proses.php?user=' . $nonMember['username'] . '&id=' . $_GET['id'] . ';">Tambahkan ke grup</a> </td>
                             </tr>';
                     }
                 ?>
