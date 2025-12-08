@@ -135,23 +135,47 @@ class grup extends connection
         return $stmt->execute();
     }
     
-    public function nonMemberList($idGrup){
-        $sql = "SELECT 
-                a.username,
-                COALESCE(a.nrp_mahasiswa, a.npk_dosen) AS nomor,
-                COALESCE(m.nama, d.nama) AS nama
+    public function nonMemberList($idGrup, $search = ""){
+        if($search == ""){
+            $sql = "SELECT 
+                    a.username,
+                    COALESCE(a.nrp_mahasiswa, a.npk_dosen) AS nomor,
+                    COALESCE(m.nama, d.nama) AS nama
+    
+                    FROM akun a
+                    LEFT JOIN mahasiswa m ON m.nrp = a.nrp_mahasiswa
+                    LEFT JOIN dosen d ON d.npk = a.npk_dosen
+    
+                    WHERE a.username NOT IN (
+                        SELECT username 
+                        FROM member_grup 
+                        WHERE idgrup = ?
+                    );";
+            $stmt = $this->con->prepare($sql);
+            $stmt->bind_param('i', $idGrup);
+            
+        }else {
+            $sql = "SELECT 
+                    a.username,
+                    COALESCE(a.nrp_mahasiswa, a.npk_dosen) AS nomor,
+                    COALESCE(m.nama, d.nama) AS nama
+    
+                    FROM akun a
+                    LEFT JOIN mahasiswa m ON m.nrp = a.nrp_mahasiswa
+                    LEFT JOIN dosen d ON d.npk = a.npk_dosen
+    
+                    WHERE a.username NOT IN (
+                        SELECT username 
+                        FROM member_grup 
+                        WHERE idgrup = ?
+                    ) AND 
+                    (COALESCE(a.nrp_mahasiswa, a.npk_dosen) LIKE ?
+                    OR COALESCE(m.nama, d.nama) LIKE ?);";
+            $stmt = $this->con->prepare($sql);
+            $param = '%'.$search.'%';
+            $stmt->bind_param('iss', $idGrup, $param, $param);
+        }
 
-                FROM akun a
-                LEFT JOIN mahasiswa m ON m.nrp = a.nrp_mahasiswa
-                LEFT JOIN dosen d ON d.npk = a.npk_dosen
-
-                WHERE a.username NOT IN (
-                    SELECT username 
-                    FROM member_grup 
-                    WHERE idgrup = ?
-                );";
-        $stmt = $this->con->prepare($sql);
-        $stmt->bind_param('i', $idGrup);
         $stmt->execute();
         return $stmt->get_result();
     }

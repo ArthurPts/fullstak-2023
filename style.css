@@ -35,6 +35,14 @@ body {
     margin-top: 2rem;
 }
 
+.detilgrup{
+    display: flex; 
+    width: 100%; 
+    margin-top: 2rem; 
+    padding: 0 4rem; 
+    box-sizing: border-box;
+}
+
 .container {
     background: rgba(20, 20, 20, 0.9);
     padding: 40px;
@@ -390,3 +398,7 @@ a {
     color: #ffffff;
 }
 
+td h3, td h6 {
+    margin: 0;
+    padding: 0;
+}

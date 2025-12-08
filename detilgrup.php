@@ -2,9 +2,11 @@
 session_start();
 include_once('service/grup.php');
 include_once('service/event.php');
+include_once('service/thread.php');
 
 $objGrup = new grup();
 $objEvent = new event();
+$objThread = new thread();
 
 if (!isset($_SESSION['login'])) {
     header("Location: login_temp.php");
@@ -20,7 +22,7 @@ $pembuat = $info['namaPembuat'];
 $tanggalPembentukan = $info['tanggal_pembentukan'];
 $jenis = $info['jenis'];
 $kode = $info['kode_pendaftaran'];
-$isPembuat = ($_SESSION['username'] == $info['username_pembuat']);
+$isPembuatGrup = ($_SESSION['username'] == $info['username_pembuat']);
 ?>
 
 <!DOCTYPE html>
@@ -68,13 +70,13 @@ $isPembuat = ($_SESSION['username'] == $info['username_pembuat']);
         </table>
 
 
-        <div style="display: flex; width: 100%; margin-top: 2rem; padding: 0 4rem; box-sizing: border-box;">
+        <div class="detilgrup">
             <div style="width: 100%; ">
                 <table border="1" style="margin: 0 auto; ">
                     <tr>
                         <th colspan="2">Event</th>
                     </tr>
-                    <?php if ($isPembuat) { ?>
+                    <?php if ($isPembuatGrup) { ?>
                         <tr>
                             <th colspan="2"><a style="color:green;" href="insertevent.php?id=<?= $_GET['id'] ?>">Tambah Event</a></th>
                         </tr>
@@ -99,7 +101,7 @@ $isPembuat = ($_SESSION['username'] == $info['username_pembuat']);
                                     </div>
                                 </td>';
 
-                            if($isPembuat){
+                            if($isPembuatGrup){
                                 echo '
                                     <td style="width: 1rem;">
                                         <a href="editevent.php?id=' . $event['idevent'] . '">
@@ -124,7 +126,7 @@ $isPembuat = ($_SESSION['username'] == $info['username_pembuat']);
                     <tr>
                         <th colspan='2' >Anggota</th>
                     </tr>
-                    <?php if ($isPembuat) { ?>
+                    <?php if ($isPembuatGrup) { ?>
                         <tr>
                             <th colspan="2"><a style="color:green;" href="insertmember.php?id=<?= $_GET['id'] ?>">Tambah Anggota</a></th>
                         </tr>
@@ -132,7 +134,7 @@ $isPembuat = ($_SESSION['username'] == $info['username_pembuat']);
                     <!-- diloop berdasarkan data anggota -->
                     <?php
                     $result = $objGrup->getMemberList($_GET['id']);
-                    if ($isPembuat){
+                    if ($isPembuatGrup){
                         while ($member = $result->fetch_assoc()) {
                             echo '<tr >
                                     <td>' . $member['username'] . '</td>
@@ -151,6 +153,38 @@ $isPembuat = ($_SESSION['username'] == $info['username_pembuat']);
                     ?>
                     <tr>
                         <td colspan="2">ujung anggota</td>
+                    </tr>
+                </table>
+            </div>
+
+             <div style="width: 100%;"> //! UNTUK THREAD BLM SELESAI
+                <table border="1" style="margin: 0 auto; ">
+                    <tr>
+                        <th colspan='2' >Thread</th>
+                    </tr>
+                    <tr>
+                        <th colspan="2"><a style="color:green;" href="????.php?id=<?= $_GET['id'] ?>">Tambah Thread</a></th> //! BLM DIHUBUNGKAN KE HALAMAN tambah THREAD
+                    </tr>
+                    <?php
+                    $result = $objThread->getThreadList($_GET['id']);
+
+                    while ($threadInfo = $result->fetch_assoc()) {
+                        if ($_SESSION['username'] == $threadInfo['username_pembuat']){
+                            echo '<tr >
+                                    <td><h3>' . $threadInfo['username_pembuat'] . '</h3><h6>'. $threadInfo['tanggal_pembuatan'] .'</h6></td>
+                                    <td style="width: 1rem;"> <a href="?????.php?id=' . $threadInfo['idthread'] . '">Tutup</a> ----- <a href="?????.php?id=' . $threadInfo['idthread'] . '">Lihat</a> </td>
+                                </tr>'; //! BLM DIHUBUNGKAN KE HALAMAN DETAIL THREAD DAN TUTUP THREADNYA
+                        }
+                        else {
+                            echo '<tr>
+                                    <td><h3>' . $threadInfo['username_pembuat'] . '</h3><h6>'. $threadInfo['tanggal_pembuatan'] .'</h6></td> 
+                                    <td style="width: 1rem;"> <a href="?????.php?id=' . $threadInfo['idthread'] . '">Lihat</a> </td>
+                                </tr>'; //! BLM DIHUBUNGKAN KE HALAMAN DETAIL THREAD THREADNYA
+                        }
+                    }
+                    ?>
+                    <tr>
+                        <td colspan="2">ujung Thread</td>
                     </tr>
                 </table>
             </div>
