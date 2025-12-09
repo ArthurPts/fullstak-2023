@@ -169,17 +169,17 @@ $isPembuatGrup = ($_SESSION['username'] == $info['username_pembuat']);
                     $result = $objThread->getThreadList($_GET['id']);
 
                     while ($threadInfo = $result->fetch_assoc()) {
-                        if ($_SESSION['username'] == $threadInfo['username_pembuat']){
+                        if ($_SESSION['username'] == $threadInfo['username_pembuat'] && $threadInfo['status'] == "Open"){
                             echo '<tr >
                                     <td><h3>' . $threadInfo['username_pembuat'] . '</h3><h6>'. $threadInfo['tanggal_pembuatan'] .'</h6></td>
-                                    <td style="width: 1rem;"> <a href="?????.php?id=' . $threadInfo['idthread'] . '">Tutup</a> ----- <a href="?????.php?id=' . $threadInfo['idthread'] . '">Lihat</a> </td>
-                                </tr>'; //! BLM DIHUBUNGKAN KE HALAMAN DETAIL THREAD DAN TUTUP THREADNYA
+                                    <td style="width: 1rem;"> <a href="close_thread.php?id=' . $threadInfo['idthread'] . '">Tutup</a> ----- <a href="?????.php?id=' . $threadInfo['idthread'] . '">Lihat</a> </td>
+                                </tr>'; //! BLM DIHUBUNGKAN KE HALAMAN DETAIL THREAD DAN TUTUP THREADNYA  ===>> DIHALAMAN DETAIL THREAD, KALO STATUSNYA OPEN, BARU BISA CHAT, KALO CLOSE, TIDAK BISA CHAT
                         }
                         else {
                             echo '<tr>
                                     <td><h3>' . $threadInfo['username_pembuat'] . '</h3><h6>'. $threadInfo['tanggal_pembuatan'] .'</h6></td> 
                                     <td style="width: 1rem;"> <a href="?????.php?id=' . $threadInfo['idthread'] . '">Lihat</a> </td>
-                                </tr>'; //! BLM DIHUBUNGKAN KE HALAMAN DETAIL THREAD THREADNYA
+                                </tr>'; //! BLM DIHUBUNGKAN KE HALAMAN DETAIL THREAD THREADNYA ===>> DIHALAMAN DETAIL THREAD, KALO STATUSNYA OPEN, BARU BISA CHAT, KALO CLOSE, TIDAK BISA CHAT
                         }
                     }
                     ?>
