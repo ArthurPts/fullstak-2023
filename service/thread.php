@@ -10,7 +10,7 @@ class thread extends connection
     }
 
     public function getThreadList($pIdGrup){
-        $sql = "SELECT * FROM thread t WHERE t.idgrup = ?";
+        $sql = "SELECT * FROM thread t WHERE t.idgrup = ? order by tanggal_pembuatan desc";
         $stmt = $this->con->prepare($sql);
         $stmt->bind_param("s", $pIdGrup);
         
@@ -20,6 +20,20 @@ class thread extends connection
     }
 
     public function getChatList($pIdThread){
+        $sql = "SELECT * FROM chat WHERE idthread = ?;";
+        $stmt = $this->con->prepare($sql);
+        $stmt->bind_param("i", $pIdThread);
+        $stmt->execute();
+        $result = $stmt->get_result();
+        return $result;
+
+    }
+
+    public function createThread($pIdGrup, $username){
+        $sql = "INSERT INTO thread(username_pembuat, idgrup, tanggal_pembuatan, status) VALUES (?, ?, now(), 'Open') ;";
+        $stmt = $this->con->prepare($sql);
+        $stmt->bind_param("si", $username, $pIdGrup);
+        return $stmt->execute();
 
     }
 

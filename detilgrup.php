@@ -7,13 +7,14 @@ include_once('service/thread.php');
 $objGrup = new grup();
 $objEvent = new event();
 $objThread = new thread();
+$thisGrupID = $_GET['id'];
 
 if (!isset($_SESSION['login'])) {
     header("Location: login_temp.php");
     exit();
 }
 
-$result = $objGrup->getGrupInfoDetail($_GET['id']);
+$result = $objGrup->getGrupInfoDetail($thisGrupID);
 $info = $result->fetch_assoc();
 
 $namaGrup = $info['nama'];
@@ -43,7 +44,7 @@ $isPembuatGrup = ($_SESSION['username'] == $info['username_pembuat']);
         <h2><?= $namaGrup ?></h2>
         <p><strong>Deskripsi:</strong> <?= $deskripsi ?></p>
         <?php if ($_SESSION['username'] == $info['username_pembuat']) { ?>
-            <a href="editdetailgrup.php?id=<?= $_GET['id'] ?>">
+            <a href="editdetailgrup.php?id=<?= $thisGrupID ?>">
                 <button>Edit</button>
             </a>
         <?php } ?>
@@ -78,13 +79,13 @@ $isPembuatGrup = ($_SESSION['username'] == $info['username_pembuat']);
                     </tr>
                     <?php if ($isPembuatGrup) { ?>
                         <tr>
-                            <th colspan="2"><a style="color:green;" href="insertevent.php?id=<?= $_GET['id'] ?>">Tambah Event</a></th>
+                            <th colspan="2"><a style="color:green;" href="insertevent.php?id=<?= $thisGrupID ?>">Tambah Event</a></th>
                         </tr>
                     <?php } ?>
                     
                     <!-- diloop berdasarkan data event -->
                     <?php
-                    $result = $objEvent->getGrupEvent($_GET['id']);
+                    $result = $objEvent->getGrupEvent($thisGrupID);
                     while ($event = $result->fetch_assoc()) {
                         $imgSrc = 'gambar/event/' . $event['idevent'] . '.' . $event['poster_extension'];
                         echo '<tr>
@@ -128,17 +129,17 @@ $isPembuatGrup = ($_SESSION['username'] == $info['username_pembuat']);
                     </tr>
                     <?php if ($isPembuatGrup) { ?>
                         <tr>
-                            <th colspan="2"><a style="color:green;" href="insertmember.php?id=<?= $_GET['id'] ?>">Tambah Anggota</a></th>
+                            <th colspan="2"><a style="color:green;" href="insertmember.php?id=<?= $thisGrupID ?>">Tambah Anggota</a></th>
                         </tr>
                     <?php } ?>
                     <!-- diloop berdasarkan data anggota -->
                     <?php
-                    $result = $objGrup->getMemberList($_GET['id']);
+                    $result = $objGrup->getMemberList($thisGrupID);
                     if ($isPembuatGrup){
                         while ($member = $result->fetch_assoc()) {
                             echo '<tr >
                                     <td>' . $member['username'] . '</td>
-                                    <td style="width: 1rem;"> <a href="delgrup.php?user=' . $member['username'] . '&id=' . $_GET['id'] . '" onclick="return confirm(\'Yakin hapus anggota ini?\');">Keluar</a> </td>
+                                    <td style="width: 1rem;"> <a href="delgrup.php?user=' . $member['username'] . '&id=' . $thisGrupID . '" onclick="return confirm(\'Yakin hapus anggota ini?\');">Keluar</a> </td>
                                 </tr>';
                         }
                     }
@@ -156,38 +157,48 @@ $isPembuatGrup = ($_SESSION['username'] == $info['username_pembuat']);
                     </tr>
                 </table>
             </div>
+            
+            <?php
+            if ($objGrup->checkMemberGrup($_SESSION['username'],$thisGrupID)){ // hanya member yang bisa liat thread
+            ?>
+                <div style="width: 100%;">
+                    <table border="1" style="margin: 0 auto; ">
+                        <tr>
+                            <th colspan='2' >Thread</th>
+                        </tr>
+                        <tr>
+                            <th colspan="2"><a style="color:green;" href="insertthread.php?id=<?= $thisGrupID?>">Tambah Thread</a></th>
+                        </tr>
+                        <?php
+                        $result = $objThread->getThreadList($thisGrupID);
 
-             <div style="width: 100%;"> //! UNTUK THREAD BLM SELESAI
-                <table border="1" style="margin: 0 auto; ">
-                    <tr>
-                        <th colspan='2' >Thread</th>
-                    </tr>
-                    <tr>
-                        <th colspan="2"><a style="color:green;" href="????.php?id=<?= $_GET['id'] ?>">Tambah Thread</a></th> //! BLM DIHUBUNGKAN KE HALAMAN tambah THREAD
-                    </tr>
-                    <?php
-                    $result = $objThread->getThreadList($_GET['id']);
-
-                    while ($threadInfo = $result->fetch_assoc()) {
-                        if ($_SESSION['username'] == $threadInfo['username_pembuat'] && $threadInfo['status'] == "Open"){
-                            echo '<tr >
-                                    <td><h3>' . $threadInfo['username_pembuat'] . '</h3><h6>'. $threadInfo['tanggal_pembuatan'] .'</h6></td>
-                                    <td style="width: 1rem;"> <a href="close_thread.php?id=' . $threadInfo['idthread'] . '">Tutup</a> ----- <a href="?????.php?id=' . $threadInfo['idthread'] . '">Lihat</a> </td>
-                                </tr>'; //! BLM DIHUBUNGKAN KE HALAMAN DETAIL THREAD DAN TUTUP THREADNYA  ===>> DIHALAMAN DETAIL THREAD, KALO STATUSNYA OPEN, BARU BISA CHAT, KALO CLOSE, TIDAK BISA CHAT
+                        while ($threadInfo = $result->fetch_assoc()) {
+                            if ($_SESSION['username'] == $threadInfo['username_pembuat'] && $threadInfo['status'] == "Open"){ //agar kalo user itu pembuat thread, dia bisa tutup threadnya
+                                echo '<tr >
+                                        <td><h3>' . $threadInfo['username_pembuat'] . '</h3><h6>'. $threadInfo['tanggal_pembuatan'] .'</h6></td>
+                                        <td style="width: 5rem;"> <a href="close_thread.php?id=' . $threadInfo['idthread'] . '">TUTUP</a> <br>-----<br> <a href="detilthread.php?id=' . $threadInfo['idthread'] . '&grup= ' . $thisGrupID . '">LIHAT</a> </td>
+                                    </tr>';
+                            }
+                            elseif($threadInfo['status'] == "Close") {
+                                echo '<tr>
+                                        <td><h3>' . $threadInfo['username_pembuat'] . '</h3><h6>'. $threadInfo['tanggal_pembuatan'] .'</h6></td> 
+                                        <td style="width: 5rem;"> SUDAH<br>DITUTUP </td>
+                                    </tr>';
+                            }
+                            else {
+                                echo '<tr>
+                                        <td><h3>' . $threadInfo['username_pembuat'] . '</h3><h6>'. $threadInfo['tanggal_pembuatan'] .'</h6></td> 
+                                        <td style="width: 5rem;"> <a href="detilthread.php?id=' . $threadInfo['idthread'] . '">LIHAT</a> </td>
+                                    </tr>';
+                            }
                         }
-                        else {
-                            echo '<tr>
-                                    <td><h3>' . $threadInfo['username_pembuat'] . '</h3><h6>'. $threadInfo['tanggal_pembuatan'] .'</h6></td> 
-                                    <td style="width: 1rem;"> <a href="?????.php?id=' . $threadInfo['idthread'] . '">Lihat</a> </td>
-                                </tr>'; //! BLM DIHUBUNGKAN KE HALAMAN DETAIL THREAD THREADNYA ===>> DIHALAMAN DETAIL THREAD, KALO STATUSNYA OPEN, BARU BISA CHAT, KALO CLOSE, TIDAK BISA CHAT
-                        }
-                    }
-                    ?>
-                    <tr>
-                        <td colspan="2">ujung Thread</td>
-                    </tr>
-                </table>
-            </div>
+                        ?>
+                        <tr>
+                            <td colspan="2">ujung Thread</td>
+                        </tr>
+                    </table>
+                </div>
+            <?php } ?>
 
         </div>
 

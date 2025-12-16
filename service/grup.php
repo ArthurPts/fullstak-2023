@@ -10,17 +10,9 @@ class grup extends connection
     }
 
     public function getMemberList($pIdGrup){
-        // if($pNomor != 0){
-        //     $sql = "SELECT a.username FROM member_grup m INNER JOIN akun a ON m.username = a.username WHERE m.idgrup = ? AND CONCAT(a.nrp_mahasiswa, a.npk_dosen) LIKE ?";
-        //     $stmt = $this->con->prepare($sql);
-        //     $stmt->bind_param("ss", $pIdGrup, '%'.$pNomor.'%');
-
-        // }
-        // else {
-            $sql = "SELECT * FROM member_grup m WHERE m.idgrup = ?";
-            $stmt = $this->con->prepare($sql);
-            $stmt->bind_param("s", $pIdGrup);
-        // }
+        $sql = "SELECT * FROM member_grup m WHERE m.idgrup = ?";
+        $stmt = $this->con->prepare($sql);
+        $stmt->bind_param("s", $pIdGrup);
         
         $stmt->execute();
         $result = $stmt->get_result();
@@ -178,6 +170,21 @@ class grup extends connection
 
         $stmt->execute();
         return $stmt->get_result();
+    }
+
+    public function checkMemberGrup($pUsername, $pIDGrup){
+        $sql = "SELECT * FROM member_grup WHERE username = ? AND idgrup = ?";
+        $stmt = $this->con->prepare($sql);
+        $stmt->bind_param("si",$pUsername, $pIDGrup);
+        $stmt->execute();
+        $result = $stmt->get_result();
+        $result = $result->num_rows;
+        if ($result == 1){
+            return true;
+        }
+        else {
+            return false;
+        }
     }
 
 
