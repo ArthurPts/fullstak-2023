@@ -37,11 +37,21 @@ body {
 
 .detilgrup{
     display: flex; 
+    flex-direction: column;
     width: 100%; 
     margin-top: 2rem; 
     padding: 0 4rem; 
     box-sizing: border-box;
+    gap: 30px;
 }
+
+@media screen and (min-width: 1024px) {
+    .detilgrup {
+        flex-direction: row;
+    }
+}
+
+
 
 .container {
     background: rgba(20, 20, 20, 0.9);
@@ -406,3 +416,30 @@ td p {
     margin: 0;
     padding: 0;
 }
+
+.eventdata {
+    display:flex; 
+    gap:1rem; 
+    align-items:center; 
+    flex-direction:column
+}
+
+@media screen and (min-width: 1240px) {
+    .eventdata {
+        flex-direction: row;
+    }
+}
+
+@media screen and (max-width: 1010px) {
+    .eventdata {
+        flex-direction: row;
+    }
+}
+
+.eventimg{
+    flex:0 0 120px; 
+    height:80px; 
+    overflow:hidden; 
+    border:1px solid #ddd;
+}
+

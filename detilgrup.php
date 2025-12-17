@@ -73,7 +73,7 @@ $isPembuatGrup = ($_SESSION['username'] == $info['username_pembuat']);
 
         <div class="detilgrup">
             <div style="width: 100%; ">
-                <table border="1" style="margin: 0 auto; ">
+                <table border="1" style="margin: 0; width:100%">
                     <tr>
                         <th colspan="2">Event</th>
                     </tr>
@@ -90,8 +90,8 @@ $isPembuatGrup = ($_SESSION['username'] == $info['username_pembuat']);
                         $imgSrc = 'gambar/event/' . $event['idevent'] . '.' . $event['poster_extension'];
                         echo '<tr>
                                 <td>
-                                    <div style="display:flex; gap:1rem; align-items:center;">
-                                        <div style="flex:0 0 120px; height:80px; overflow:hidden; border:1px solid #ddd;">
+                                    <div class="eventdata">
+                                        <div class="eventimg">
                                             <img src="'.$imgSrc. '" alt="' . $event['judul'] . '" style="width:100%; height:100%; object-fit:cover; display:block;">
                                         </div>
                                         <div style="flex:1;">
@@ -108,6 +108,7 @@ $isPembuatGrup = ($_SESSION['username'] == $info['username_pembuat']);
                                         <a href="editevent.php?id=' . $event['idevent'] . '">
                                             Edit
                                         </a>
+                                        <br>------<br>
                                         <a href="delevent.php?id=' . $event['idevent'] . '">
                                             Delete
                                         </a>
@@ -123,7 +124,7 @@ $isPembuatGrup = ($_SESSION['username'] == $info['username_pembuat']);
             </div>
 
             <div style="width: 100%;">
-                <table border="1" style="margin: 0 auto; ">
+                <table border="1" style="margin: 0; width:100%;">
                     <tr>
                         <th colspan='2' >Anggota</th>
                     </tr>
@@ -162,7 +163,7 @@ $isPembuatGrup = ($_SESSION['username'] == $info['username_pembuat']);
             if ($objGrup->checkMemberGrup($_SESSION['username'],$thisGrupID)){ // hanya member yang bisa liat thread
             ?>
                 <div style="width: 100%;">
-                    <table border="1" style="margin: 0 auto; ">
+                    <table border="1" style="margin: 0 auto; width:100%;">
                         <tr>
                             <th colspan='2' >Thread</th>
                         </tr>
