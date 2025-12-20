@@ -26,8 +26,17 @@ class thread extends connection
         $stmt->execute();
         $result = $stmt->get_result();
         return $result;
-
     }
+
+    public function insertChat($pIdThread, $pUsername, $pIsi){
+        $sql = "INSERT INTO chat 
+                (idthread, username_pembuat, isi, tanggal_pembuatan)
+                VALUES (?, ?, ?, NOW())";
+        $stmt = $this->con->prepare($sql);
+        $stmt->bind_param("iss", $pIdThread, $pUsername, $pIsi);
+        return $stmt->execute();
+    }
+
 
     public function createThread($pIdGrup, $username){
         $sql = "INSERT INTO thread(username_pembuat, idgrup, tanggal_pembuatan, status) VALUES (?, ?, now(), 'Open') ;";
