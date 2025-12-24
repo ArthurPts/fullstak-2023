@@ -442,3 +442,24 @@ td p {
     overflow:hidden; 
     border:1px solid #ddd;
 }
+
+.member-box {
+    width: 50%;
+}
+
+/* layar kecil (HP) */
+@media (max-width: 768px) {
+
+    .grup {
+    width: 100%;
+    }
+    
+    .detilgrup {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .member-box {
+        width: 100%;
+    }
+}

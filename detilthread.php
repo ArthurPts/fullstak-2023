@@ -30,7 +30,7 @@ $member = $objGrup->getMemberList($idGrup);
 <div class="detilgrup">
 
 <!-- KIRI -->
-<div class="grup" style="width:20%;">
+<div class="grup member-box">
     <div class="grupDesc">
         <h2>Member</h2>
         <?php while ($m = $member->fetch_assoc()) { ?>
