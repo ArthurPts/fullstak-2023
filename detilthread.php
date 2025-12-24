@@ -95,6 +95,22 @@ form.addEventListener("submit", function(e) {
         chatBox.scrollTop = chatBox.scrollHeight;
     });
 });
+
+function selectChat(){
+    const data = new FormData();
+    data.append("idthread","<?=$idThread?>")
+    fetch("selectchat.php",{
+        method: "POST",
+        body: data
+    })
+    .then(res => res.text())
+    .then (html =>{
+        chatBox.innerHTML = html;
+        chatBox.scrollTop = chatBox.scrollHeight;
+    });
+}
+
+setInterval(selectChat, 1000); // akan membuat update chat setiap 1 detik sekali
 </script>
 
 </body>

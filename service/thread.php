@@ -20,7 +20,16 @@ class thread extends connection
     }
 
     public function getChatList($pIdThread){
-        $sql = "SELECT * FROM chat WHERE idthread = ?;";
+        $sql = "SELECT chat.*,
+                    COALESCE(mahasiswa.nama, dosen.nama) AS nama_pengirim
+                FROM chat
+                JOIN akun 
+                    ON chat.username_pembuat = akun.username
+                LEFT JOIN mahasiswa 
+                    ON akun.nrp_mahasiswa = mahasiswa.nrp
+                LEFT JOIN dosen 
+                    ON akun.npk_dosen = dosen.npk
+                WHERE chat.idthread = ?;";
         $stmt = $this->con->prepare($sql);
         $stmt->bind_param("i", $pIdThread);
         $stmt->execute();
@@ -51,8 +60,5 @@ class thread extends connection
         $stmt = $this->con->prepare($sql);
         $stmt->bind_param('i', $pIdThread);
         return $stmt->execute();
-    }
-
-    
-  
+    }   
 }
