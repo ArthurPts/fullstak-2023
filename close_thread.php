@@ -10,11 +10,12 @@ if (!isset($_GET['id'])) {
 }
 
 $idThread = $_GET['id'];
+$idGrup = $_GET['grup'];
 
 // jalankan fungsi
 $objThread->closeThread($idThread);
 
 // redirect kembali (optional)
-header("Location: detilgrup.php?id=" . $idThread);
+header("Location: detilgrup.php?id=" . $idGrup);
 exit();
 ?>

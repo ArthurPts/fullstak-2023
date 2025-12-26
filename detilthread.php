@@ -15,9 +15,16 @@ if (!$objGrup->checkMemberGrup($_SESSION['username'], $_GET['grup'])) {
 
 $idThread = $_GET['id'];
 $idGrup   = $_GET['grup'];
+$status_thread="";
+$thread=$objThread->getThreadInfo($idThread);
+while($t = $thread->fetch_assoc()){
+    $status_thread=$t['status'];
+}
 
 $chat   = $objThread->getChatList($idThread);
 $member = $objGrup->getMemberList($idGrup);
+
+
 ?>
 <!DOCTYPE html>
 <html>
@@ -26,6 +33,13 @@ $member = $objGrup->getMemberList($idGrup);
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
+<?php include('header.php'); ?>
+
+<div class="chat-header">
+    <a href="javascript:history.back()" class="back-btn">←</a>
+    <span>Chat</span>
+</div>
+
 
 <div class="detilgrup">
 
@@ -40,10 +54,10 @@ $member = $objGrup->getMemberList($idGrup);
 </div>
 
 <!-- KANAN -->
-<div class="grup" style="width:80%; display:flex; flex-direction:column;">
+<div class="grup" style="width:80%; display:flex; flex-direction:column; align-items: center; justify-content: center;">
 
     <!-- CHAT -->
-    <div id="chat" style="flex:1; overflow-y:auto; padding:1rem;">
+    <div id="chat" style="width: 90%; flex:1; overflow-y:auto; padding:1rem;">
         <?php while ($c = $chat->fetch_assoc()) { ?>
             <?php if ($c['username_pembuat'] == $_SESSION['username']) { ?>
                 <div style="margin-bottom:1rem; text-align:right; color:greenyellow;">
@@ -59,15 +73,17 @@ $member = $objGrup->getMemberList($idGrup);
         <?php } ?>
     </div>
 
-    <!-- INPUT -->
-    <div style="border-top:1px solid #333; padding:1rem;">
-        <form id="formChat" style="display:flex; gap:1rem;">
-            <input type="hidden" name="idthread" value="<?= $idThread ?>">
-            <input type="text" name="isi" id="isi"
-                   placeholder="ketik pesan" style="flex:1;" required>
-            <button type="submit">SEND</button>
-        </form>
-    </div>
+   <!-- INPUT -->
+    <?php if($status_thread != "Close") { ?>
+        <div style="border-top:1px solid #333; padding:1rem; width: 90%;">
+            <form id="formChat" style="display:flex; flex-direction: row; gap:1rem;">
+                <input type="hidden" name="idthread" value="<?= $idThread ?>">
+                <input type="text" name="isi" id="isi" placeholder="ketik pesan" style="flex:3;" required>
+                <button type="submit" style="flex:1;">SEND</button>
+            </form>
+        </div>
+    <?php } ?>
+    
 
 </div>
 </div>

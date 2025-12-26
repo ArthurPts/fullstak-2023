@@ -9,6 +9,16 @@ class thread extends connection
         parent::__construct();
     }
 
+    public function getThreadInfo($pIdThread){
+        $sql = "SELECT * FROM thread t WHERE t.idthread = ? order by tanggal_pembuatan desc";
+        $stmt = $this->con->prepare($sql);
+        $stmt->bind_param("s", $pIdThread);
+        
+        $stmt->execute();
+        $result = $stmt->get_result();
+        return $result;
+    }
+
     public function getThreadList($pIdGrup){
         $sql = "SELECT * FROM thread t WHERE t.idgrup = ? order by tanggal_pembuatan desc";
         $stmt = $this->con->prepare($sql);

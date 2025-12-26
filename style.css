@@ -221,7 +221,7 @@ img {
 }
 
 .grup {
-    background: rgba(40, 40, 40, 0.9);
+    /*background: rgba(40, 40, 40, 0.9);*/
     padding: 0;
     margin: 2rem 1rem;
     border-radius: 20px;
@@ -447,11 +447,28 @@ td p {
     width: 50%;
 }
 
+/* layar sedang (HP) */
+@media screen and (max-width: 1010px) {
+    .member-box {
+        width: 80%; 
+    }
+
+    .grup {
+        width: 80%;
+        margin-left: 10%; 
+    }
+    
+    .eventdata {
+        flex-direction: row;
+    }
+}
+
 /* layar kecil (HP) */
 @media (max-width: 768px) {
 
     .grup {
-    width: 100%;
+        width: 100%;
+        margin-left: 10%;
     }
     
     .detilgrup {
@@ -460,6 +477,23 @@ td p {
     }
 
     .member-box {
-        width: 100%;
+        width: 80%;
     }
+}
+
+.chat-header {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 10px;
+    border-bottom: 1px solid #ccc;
+    position: sticky;
+    top: 0;
+    background: #fff;
+}
+
+.back-btn {
+    font-size: 18px;
+    text-decoration: none;
+    color: #333;
 }
