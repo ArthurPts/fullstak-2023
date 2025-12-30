@@ -4,7 +4,6 @@ include_once('service/thread.php');
 
 $objThread = new thread();
 
-// pastikan parameter id ada
 if (!isset($_GET['id'])) {
     die("ID thread tidak ditemukan.");
 }
@@ -12,10 +11,8 @@ if (!isset($_GET['id'])) {
 $idThread = $_GET['id'];
 $idGrup = $_GET['grup'];
 
-// jalankan fungsi
 $objThread->closeThread($idThread);
 
-// redirect kembali (optional)
 header("Location: detilgrup.php?id=" . $idGrup);
 exit();
 ?>

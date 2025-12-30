@@ -35,7 +35,7 @@ if (isset($_POST['submit'])) {
     $keterangan = $_POST['txtketerangan'];
     $jenis = $_POST['rad_jenis'];
 
-    $poster_extension = $dataEvent['poster_extension'];  
+    $poster_extension = $dataEvent['poster_extension'];
     $uploadDir = 'gambar/event/';
 
     if (isset($_FILES['fileposter']) && $_FILES['fileposter']['error'] == 0) {
@@ -78,25 +78,6 @@ $tanggal_input = date("Y-m-d\TH:i", strtotime($dataEvent['tanggal']));
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Edit Event</title>
     <link rel="stylesheet" href="style.css">
-
-    <style>
-        textarea {
-            width: 100%;
-            padding: 10px;
-            border-radius: 10px;
-            border: none;
-            background: #2e2e2e;
-            color: #fff;
-            box-sizing: border-box;
-            font-size: 15px;
-            resize: vertical;
-        }
-
-        textarea:focus {
-            outline: none;
-            box-shadow: 0 0 8px #ffffff;
-        }
-    </style>
 </head>
 
 <body>
@@ -107,7 +88,7 @@ $tanggal_input = date("Y-m-d\TH:i", strtotime($dataEvent['tanggal']));
             <h2>Edit Event</h2>
 
             <form method="post" action="editevent.php?id=<?php echo $idevent; ?>" enctype="multipart/form-data" onsubmit="return validateForm()">
-                
+
                 <input type="hidden" name="txtidevent" value="<?php echo $idevent; ?>">
 
                 <div>
@@ -143,8 +124,8 @@ $tanggal_input = date("Y-m-d\TH:i", strtotime($dataEvent['tanggal']));
                     <label for="fileposter">Poster Event (Opsional):</label>
                     <input type="file" id="fileposter" name="fileposter" accept=".jpg,.jpeg,.png,.gif">
                     <br>
-                    <img src="gambar/event/<?php echo $idevent . "." . $dataEvent['poster_extension']; ?>" 
-                         style="height: 7rem; margin-top: 10px;" alt="Poster Event">
+                    <img src="gambar/event/<?php echo $idevent . "." . $dataEvent['poster_extension']; ?>"
+                        style="height: 7rem; margin-top: 10px;" alt="Poster Event">
                 </div>
 
                 <input type="submit" name="submit" value="Update Event">
@@ -155,42 +136,43 @@ $tanggal_input = date("Y-m-d\TH:i", strtotime($dataEvent['tanggal']));
     </div>
 
     <script>
-    function validateForm() {
-        const judul = document.getElementById('judul').value;
-        const tanggal = document.getElementById('tanggal').value;
-        const keterangan = document.getElementById('keterangan').value;
-        const jenis = document.querySelector('input[name="rad_jenis"]:checked');
-        const filePoster = document.getElementById('fileposter');
+        function validateForm() {
+            const judul = $('#judul').val();
+            const tanggal = $('#tanggal').val();
+            const keterangan = $('#keterangan').val();
+            const jenis = $('input[name="rad_jenis"]:checked').val();
+            const filePoster = $('#fileposter');
 
-        if (judul.trim() === "") {
-            alert("Judul Event tidak boleh kosong!");
-            return false;
+            if ($.trim(judul) === "") {
+                alert("Judul Event tidak boleh kosong!");
+                return false;
+            }
+
+            if ($.trim(tanggal) === "") {
+                alert("Tanggal Event tidak boleh kosong!");
+                return false;
+            }
+
+            if ($.trim(keterangan) === "") {
+                alert("Keterangan tidak boleh kosong!");
+                return false;
+            }
+
+            if (!jenis) {
+                alert("Pilih jenis event!");
+                return false;
+            }
+
+            const maxFileSize = 4 * 1024 * 1024; // 4MB
+            if (filePoster[0].files.length > 0 && filePoster[0].files[0].size > maxFileSize) {
+                alert("Ukuran file poster terlalu besar. Maksimal 4MB.");
+                return false;
+            }
+
+            return true;
         }
-
-        if (tanggal.trim() === "") {
-            alert("Tanggal Event tidak boleh kosong!");
-            return false;
-        }
-
-        if (keterangan.trim() === "") {
-            alert("Keterangan tidak boleh kosong!");
-            return false;
-        }
-
-        if (!jenis) {
-            alert("Pilih jenis event!");
-            return false;
-        }
-
-        const maxFileSize = 4 * 1024 * 1024;
-        if (filePoster.files.length > 0 && filePoster.files[0].size > maxFileSize) {
-            alert("Ukuran file poster terlalu besar. Maksimal 4MB.");
-            return false;
-        }
-
-        return true;
-    }
     </script>
 
 </body>
+
 </html>

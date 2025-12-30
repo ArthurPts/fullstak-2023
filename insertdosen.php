@@ -1,8 +1,8 @@
 <?php
 session_start();
 
-if($_SESSION['admin'] == 0) {
-	require_once ('service/404.php');
+if ($_SESSION['admin'] == 0) {
+	require_once('service/404.php');
 }
 
 ?>
@@ -52,24 +52,24 @@ if($_SESSION['admin'] == 0) {
 	</div>
 
 	<script>
-	function validateForm() {
-		const nama = document.getElementById('nama').value;
-		const npk = document.getElementById('npk').value;
+		function validateForm() {
+			const nama = $('#nama').val();
+			const npk = $('#npk').val();
 
-		// Cek nama
-		if (nama === "") {
-			alert("Nama tidak boleh kosong!");
-			return false;
+			// Cek nama
+			if ($.trim(nama) === "") {
+				alert("Nama tidak boleh kosong!");
+				return false;
+			}
+
+			// Cek NPK harus angka dan tidak kosong
+			if ($.trim(npk) === "" || isNaN(npk)) {
+				alert("NPK harus berupa angka!");
+				return false;
+			}
+
+			return true;
 		}
-
-		// Cek NPK harus angka dan tidak kosong
-		if (npk === "" || isNaN(npk)) {
-			alert("NPK harus berupa angka!");
-			return false;
-		}
-
-		return true; 
-	}
 	</script>
 
 </body>

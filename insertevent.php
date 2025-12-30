@@ -1,58 +1,58 @@
 <?php
-    session_start();
-    include_once('service/event.php'); 
+session_start();
+include_once('service/event.php');
 
-    $objEvent = new event();
+$objEvent = new event();
 
-    if (!isset($_SESSION['login'])) {
-        header("Location: login_temp.php"); 
-        exit();
-    } elseif (($_SESSION['username'][0] === 'D') == false) {
-        header("Location: index.php"); 
-        exit();
-    }
-    
-    $message = '';
-    if (isset($_POST['submit'])) {
-        $idgrup = $_POST['txtidgrup'];
-        $judul = $_POST['txtjudul'];
-        $tanggal = $_POST['txttanggal'];
-        $keterangan = $_POST['txtketerangan'];
-        $jenis = $_POST['rad_jenis'];
-        $judul_slug = $_POST['txtslug'];
+if (!isset($_SESSION['login'])) {
+    header("Location: login_temp.php");
+    exit();
+} elseif (($_SESSION['username'][0] === 'D') == false) {
+    header("Location: index.php");
+    exit();
+}
 
-        $poster_extension = '';
-        $upload_success = true;
-        $uploadDir = 'gambar/event/'; 
+$message = '';
+if (isset($_POST['submit'])) {
+    $idgrup = $_POST['txtidgrup'];
+    $judul = $_POST['txtjudul'];
+    $tanggal = $_POST['txttanggal'];
+    $keterangan = $_POST['txtketerangan'];
+    $jenis = $_POST['rad_jenis'];
+    $judul_slug = $_POST['txtslug'];
 
-        if (isset($_FILES['fileposter']) && $_FILES['fileposter']['error'] == 0) {
+    $poster_extension = '';
+    $upload_success = true;
+    $uploadDir = 'gambar/event/';
 
-            $fileInfo = pathinfo($_FILES['fileposter']['name']); 
-            $poster_extension = strtolower($fileInfo['extension']);
+    if (isset($_FILES['fileposter']) && $_FILES['fileposter']['error'] == 0) {
 
-            $eventID = $objEvent->insertEvent(
-                $idgrup,
-                $judul,
-                $judul_slug,
-                $tanggal,
-                $keterangan,
-                $jenis,
-                $poster_extension
-            );
+        $fileInfo = pathinfo($_FILES['fileposter']['name']);
+        $poster_extension = strtolower($fileInfo['extension']);
 
-            $temp_file_name = $eventID . '.' . $poster_extension;
-            $uploadPath = $uploadDir . $temp_file_name;
+        $eventID = $objEvent->insertEvent(
+            $idgrup,
+            $judul,
+            $judul_slug,
+            $tanggal,
+            $keterangan,
+            $jenis,
+            $poster_extension
+        );
 
-            if (!move_uploaded_file($_FILES['fileposter']['tmp_name'], $uploadPath)) {
-                die("Failed to upload file!");
-            }
+        $temp_file_name = $eventID . '.' . $poster_extension;
+        $uploadPath = $uploadDir . $temp_file_name;
 
-            echo "<script>alert('Event berhasil dibuat!');</script>";
+        if (!move_uploaded_file($_FILES['fileposter']['tmp_name'], $uploadPath)) {
+            die("Failed to upload file!");
         }
-        header("Location: detilgrup.php?id=" . $idgrup);
-        exit();
+
+        echo "<script>alert('Event berhasil dibuat!');</script>";
     }
-    $tglDefault = date("Y-m-d\TH:i");
+    header("Location: detilgrup.php?id=" . $idgrup);
+    exit();
+}
+$tglDefault = date("Y-m-d\TH:i");
 ?>
 
 <!DOCTYPE html>
@@ -63,24 +63,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Buat Event Baru</title>
     <link rel="stylesheet" href="style.css">
-    <style>
-        textarea {
-            width: 100%;
-            padding: 10px;
-            border-radius: 10px;
-            border: none;
-            background: #2e2e2e;
-            color: #fff;
-            box-sizing: border-box;
-            font-size: 15px;
-            resize: vertical;
-        }
-
-        textarea:focus {
-            outline: none;
-            box-shadow: 0 0 8px #ffffff;
-        }
-    </style>
 </head>
 
 <body>
@@ -89,10 +71,10 @@
     <div class="style">
         <div class="container">
             <h2>Buat Event Baru</h2>
-            
+
             <form method="post" action="insertevent.php" enctype="multipart/form-data" onsubmit="return validateForm()">
                 <input type="hidden" name="txtidgrup" value="<?php echo $_GET['id']; ?>">
-                
+
                 <div>
                     <label for="judul">Judul Event:</label>
                     <input type="text" id="judul" name="txtjudul" maxlength="45" required>
@@ -100,7 +82,7 @@
 
                 <div>
                     <label for="judul">Judul slug:</label>
-                    <input type="text" id="slug" name="txtslug" maxlength="45" required >
+                    <input type="text" id="slug" name="txtslug" maxlength="45" required>
                 </div>
 
                 <div>
@@ -115,9 +97,9 @@
 
                 <label>Jenis:</label>
                 <div style="display: flex; gap: 10px; align-items: center;">
-					<label><input type="radio" name="rad_jenis" value="Privat" > Privat</label>
-					<label><input type="radio" name="rad_jenis" value="Publik" > Publik</label>
-				</div>
+                    <label><input type="radio" name="rad_jenis" value="Privat"> Privat</label>
+                    <label><input type="radio" name="rad_jenis" value="Publik"> Publik</label>
+                </div>
 
                 <div>
                     <label for="fileposter">Poster Event (Max 4MB):</label>
@@ -132,46 +114,47 @@
     </div>
 
     <script>
-    function validateForm() {
-        const judul = document.getElementById('judul').value;
-        const tanggal = document.getElementById('tanggal').value;
-        const keterangan = document.getElementById('keterangan').value;
-        const jenis = document.querySelector('input[name="rad_jenis"]:checked');
-        const filePoster = document.getElementById('fileposter').value;
+        function validateForm() {
+            const judul = $('#judul').val();
+            const tanggal = $('#tanggal').val();
+            const keterangan = $('#keterangan').val();
+            const jenis = $('input[name="rad_jenis"]:checked').val();
+            const fileInput = $('#fileposter');
+            const filePoster = fileInput.val();
 
-        if (judul.trim() === "") {
-            alert("Judul Event tidak boleh kosong!");
-            return false;
-        }
-        
-        if (tanggal.trim() === "") {
-            alert("Tanggal Event tidak boleh kosong!");
-            return false;
-        }
+            if ($.trim(judul) === "") {
+                alert("Judul Event tidak boleh kosong!");
+                return false;
+            }
 
-        if (keterangan.trim() === "") {
-            alert("Keterangan tidak boleh kosong!");
-            return false;
-        }
-        
-        if (!jenis) {
-            alert("Harap pilih Jenis Event!");
-            return false;
-        }
+            if ($.trim(tanggal) === "") {
+                alert("Tanggal Event tidak boleh kosong!");
+                return false;
+            }
 
-        if (filePoster === "") {
-            alert("Harap unggah Poster Event!");
-            return false;
-        }
-        
-        const maxFileSize = 4 * 1024 * 1024; 
-        if (document.getElementById('fileposter').files.length > 0 && document.getElementById('fileposter').files[0].size > maxFileSize) {
-            alert("Ukuran file poster terlalu besar. Maksimal 4MB.");
-            return false;
-        }
+            if ($.trim(keterangan) === "") {
+                alert("Keterangan tidak boleh kosong!");
+                return false;
+            }
 
-        return true; 
-    }
+            if (!jenis) {
+                alert("Harap pilih Jenis Event!");
+                return false;
+            }
+
+            if (filePoster === "") {
+                alert("Harap unggah Poster Event!");
+                return false;
+            }
+
+            const maxFileSize = 4 * 1024 * 1024; // 4MB
+            if (fileInput[0].files.length > 0 && fileInput[0].files[0].size > maxFileSize) {
+                alert("Ukuran file poster terlalu besar. Maksimal 4MB.");
+                return false;
+            }
+
+            return true;
+        }
     </script>
 
 </body>

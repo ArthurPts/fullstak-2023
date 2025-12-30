@@ -112,9 +112,11 @@ $isMahasiswa = ($_SESSION['username'][0] === 'M');
     <div class="styleGrup">
         <?php while ($grup = $result->fetch_assoc()) {
             if ($_SESSION['username'] == $grup['username_pembuat']) {
-                echo '<div class="grup" style="background: rgba(75, 75, 75, 0.9);">';
+                echo '<div class="grup grupAdmin">';
+            } elseif ((isset($grup['anggota']) && $grup['anggota'] != NULL) || $type == "list") {
+                echo '<div class="grup grupMember">';
             } else {
-                echo '<div class="grup" >';
+                echo '<div class="grup">';
             }
 
             echo '

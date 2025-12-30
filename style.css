@@ -35,12 +35,12 @@ body {
     margin-top: 2rem;
 }
 
-.detilgrup{
-    display: flex; 
+.detilgrup {
+    display: flex;
     flex-direction: column;
-    width: 100%; 
-    margin-top: 2rem; 
-    padding: 0 4rem; 
+    width: 100%;
+    margin-top: 2rem;
+    padding: 0 4rem;
     box-sizing: border-box;
     gap: 30px;
 }
@@ -221,7 +221,6 @@ img {
 }
 
 .grup {
-    /*background: rgba(40, 40, 40, 0.9);*/
     padding: 0;
     margin: 2rem 1rem;
     border-radius: 20px;
@@ -230,6 +229,16 @@ img {
     backdrop-filter: blur(6px);
     animation: glow 2s infinite alternate;
 }
+
+.grupAdmin{
+    background: rgba(109, 109, 109, 0.9);
+}
+
+.grupMember{
+    background: rgba(59, 59, 59, 0.9);
+}
+
+
 
 .grup .image {
     margin: 0;
@@ -247,11 +256,11 @@ img {
 }
 
 .grupDesc {
-    padding:0 2rem 2rem 2rem;
+    padding: 0 2rem 2rem 2rem;
 }
 
 .infoGrup>p {
-    padding:0;
+    padding: 0;
     margin: 0;
     font-size: x-small;
 }
@@ -265,7 +274,8 @@ img {
     overflow: hidden;
     display: -webkit-box;
     -webkit-box-orient: vertical;
-    line-clamp: 3; /* Jumlah baris yang diinginkan */
+    line-clamp: 3;
+    /* Jumlah baris yang diinginkan */
     -webkit-line-clamp: 3;
 }
 
@@ -408,20 +418,22 @@ a {
     color: #ffffff;
 }
 
-td h3, td h6 {
+td h3,
+td h6 {
     margin: 0;
     padding: 0;
 }
+
 td p {
     margin: 0;
     padding: 0;
 }
 
 .eventdata {
-    display:flex; 
-    gap:1rem; 
-    align-items:center; 
-    flex-direction:column
+    display: flex;
+    gap: 1rem;
+    align-items: center;
+    flex-direction: column
 }
 
 @media screen and (min-width: 1240px) {
@@ -436,11 +448,11 @@ td p {
     }
 }
 
-.eventimg{
-    flex:0 0 120px; 
-    height:80px; 
-    overflow:hidden; 
-    border:1px solid #ddd;
+.eventimg {
+    flex: 0 0 120px;
+    height: 80px;
+    overflow: hidden;
+    border: 1px solid #ddd;
 }
 
 .member-box {
@@ -450,14 +462,14 @@ td p {
 /* layar sedang (HP) */
 @media screen and (max-width: 1010px) {
     .member-box {
-        width: 80%; 
+        width: 80%;
     }
 
     .grup {
         width: 80%;
-        margin-left: 10%; 
+        margin-left: 10%;
     }
-    
+
     .eventdata {
         flex-direction: row;
     }
@@ -470,7 +482,7 @@ td p {
         width: 100%;
         margin-left: 10%;
     }
-    
+
     .detilgrup {
         flex-direction: column;
         align-items: center;
@@ -496,4 +508,21 @@ td p {
     font-size: 18px;
     text-decoration: none;
     color: #333;
+}
+
+textarea {
+    width: 100%;
+    padding: 10px;
+    border-radius: 10px;
+    border: none;
+    background: #2e2e2e;
+    color: #fff;
+    box-sizing: border-box;
+    font-size: 15px;
+    resize: vertical;
+}
+
+textarea:focus {
+    outline: none;
+    box-shadow: 0 0 8px #ffffff;
 }

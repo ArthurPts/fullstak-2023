@@ -37,7 +37,7 @@ class event extends connection
         $stmt = $this->con->prepare($sql);
         $stmt->bind_param('issssss', $pIdGrup, $pJudul, $pSlug, $pTanggal, $pKeterangan, $pJenis, $pPosterExt);
         if ($stmt->execute()) {
-            return $this->con->insert_id;   // ← return the new inserted ID
+            return $this->con->insert_id;   // return the new inserted ID
         } else {
             return false; // or handle error
         }
@@ -60,23 +60,23 @@ class event extends connection
         return $stmt->execute();
     }
 
-    public function generateEventId()
-    {
-        // Query untuk mengambil ID terakhir
-        $sql = "SELECT idevent FROM event ORDER BY idevent DESC LIMIT 1";
-        $stmt = $this->con->prepare($sql);
-        $stmt->execute();
-        $stmt->bind_result($lastId);
-        $stmt->fetch();
-        $stmt->close();
+    // public function generateEventId()
+    // {
+    //     // Query untuk mengambil ID terakhir
+    //     $sql = "SELECT idevent FROM event ORDER BY idevent DESC LIMIT 1";
+    //     $stmt = $this->con->prepare($sql);
+    //     $stmt->execute();
+    //     $stmt->bind_result($lastId);
+    //     $stmt->fetch();
+    //     $stmt->close();
 
-        // Jika masih kosong, mulai dari 1
-        if ($lastId === null) {
-            return 1;
-        }
+    //     // Jika masih kosong, mulai dari 1
+    //     if ($lastId === null) {
+    //         return 1;
+    //     }
 
-        // Kembalikan ID terakhir + 1 (jika ingin ID baru)
-        return $lastId + 1;
-    }
+    //     // Kembalikan ID terakhir + 1 (untuk jadi nama gambarnya nanti)
+    //     return $lastId + 1;
+    // }
 }
 ?>

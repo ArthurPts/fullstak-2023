@@ -1,6 +1,5 @@
 <?php
 session_start();
-
 include_once('service/thread.php');
 $objThread = new thread();
 
@@ -12,24 +11,27 @@ $idthread = $_POST['idthread'];
 $chat = $objThread->getChatList($idthread);
 
 while ($c = $chat->fetch_assoc()) {
-
     $waktu = date("d M Y H:i", strtotime($c['tanggal_pembuatan']));
 
     if ($c['username_pembuat'] == $_SESSION['username']) {
         ?>
-        <div style="margin-bottom:1rem; text-align:right; color:greenyellow;">
-            <b><?= htmlspecialchars($c['nama_pengirim']) ?></b><br>
-            <?= htmlspecialchars($c['isi']) ?><br>
-            <small style="color:#aaa;"><?= $waktu ?></small>
-        </div>
+        <tr>
+            <td style="text-align: right; padding-right: 5vw; color: greenyellow;">
+                <p style="font-size: 1vw;"><?= htmlspecialchars($c['nama_pengirim']) ?></p>
+                <div style="font-size: 2vw;"><?= htmlspecialchars($c['isi']) ?></div>
+                <small style="font-size: 0.8vw;"><?= $waktu ?></small>
+            </td>
+        </tr>
         <?php
     } else {
         ?>
-        <div style="margin-bottom:1rem;">
-            <b><?= htmlspecialchars($c['nama_pengirim']) ?></b><br>
-            <?= htmlspecialchars($c['isi']) ?><br>
-            <small style="color:#aaa;"><?= $waktu ?></small>
-        </div>
+        <tr>
+            <td style="text-align: left; padding-left: 5vw;">
+                <p style="font-size: 1vw;"><?= htmlspecialchars($c['nama_pengirim']) ?></p>
+                <div style="font-size: 2vw;"><?= htmlspecialchars($c['isi']) ?></div>
+                <small style="font-size: 0.8vw;"><?= $waktu ?></small>
+            </td>
+        </tr>
         <?php
     }
 }

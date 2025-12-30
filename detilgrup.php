@@ -178,20 +178,20 @@ $isPembuatGrup = ($_SESSION['username'] == $info['username_pembuat']);
                                 echo '<tr >
                                         <td><h3>' . $threadInfo['username_pembuat'] . '</h3><h6>'. $threadInfo['tanggal_pembuatan'] .'</h6></td>
                                         <td style="width: 5rem;"> <a href="close_thread.php?id=' . $threadInfo['idthread'] . '&grup=' . $thisGrupID . '">TUTUP
-                                        </a> <br>-----<br> <a href="detilthread.php?id=' . $threadInfo['idthread'] . '&grup= ' . $thisGrupID . '">LIHAT</a> </td>
+                                        </a> <br>-----<br> <a href="detilthread.php?id=' . $threadInfo['idthread'] . '&grup=' . $thisGrupID . '">LIHAT</a> </td>
                                     </tr>';
                             }
                             elseif($threadInfo['status'] == "Close") {
                                 echo '<tr>
                                         <td><h3>' . $threadInfo['username_pembuat'] . '</h3><h6>'. $threadInfo['tanggal_pembuatan'] .'</h6></td> 
                                         <td style="width: 5rem;"> SUDAH<br>DITUTUP 
-                                        </a> <br>-----<br> <a href="detilthread.php?id=' . $threadInfo['idthread'] . '&grup= ' . $thisGrupID . '">LIHAT</a> </td>
+                                        </a> <br>-----<br> <a href="detilthread.php?id=' . $threadInfo['idthread'] . '&grup=' . $thisGrupID . '">LIHAT</a> </td>
                                     </tr>';
                             }
                             else {
                                 echo '<tr>
                                         <td><h3>' . $threadInfo['username_pembuat'] . '</h3><h6>'. $threadInfo['tanggal_pembuatan'] .'</h6></td> 
-                                        <td style="width: 5rem;"> <a href="detilthread.php?id=' . $threadInfo['idthread'] . '&grup= ' . $thisGrupID .'">LIHAT</a> </td>
+                                        <td style="width: 5rem;"> <a href="detilthread.php?id=' . $threadInfo['idthread'] . '&grup=' . $thisGrupID .'">LIHAT</a> </td>
                                     </tr>';
                             }
                         }

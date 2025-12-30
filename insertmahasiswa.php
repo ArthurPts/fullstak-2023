@@ -1,20 +1,23 @@
 <?php
 session_start();
 
-if($_SESSION['admin'] == 0) {
-	require_once ('service/404.php');
+if ($_SESSION['admin'] == 0) {
+	require_once('service/404.php');
 }
 
 ?>
 
 <!DOCTYPE html>
 <html>
+
 <head>
 	<meta charset="utf-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<title>Projek UTS - Input Mahasiswa</title>
-    <link rel="stylesheet" href="style.css">
+	<link rel="stylesheet" href="style.css">
+	<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 </head>
+
 <body>
 	<?php include('header.php'); ?>
 	<div class="style">
@@ -28,7 +31,7 @@ if($_SESSION['admin'] == 0) {
 				<input type="text" name="txt_nama" id="txt_nama">
 
 				<label>Password:</label>
-				<input type="password" name="txt_password" placeholder="buat password"required>
+				<input type="password" name="txt_password" placeholder="buat password" required>
 
 				<label>Gender:</label><br>
 				<div style="display: flex; gap: 10px; align-items: center;">
@@ -52,47 +55,30 @@ if($_SESSION['admin'] == 0) {
 	</div>
 
 	<script>
-	function validateForm() {
-		const nrp = document.getElementById('txt_nrp').value;
-		const nama = document.getElementById('txt_nama').value;
-		const angkatan = document.getElementById('txt_angkatan').value;
-		const gender = document.querySelector('input[name="rad_gender"]:checked');
-		const tanggal = document.getElementById('date_tanggal_lahir').value;
+		function validateForm() {
+			var nrp = $("#txt_nrp").val();
+			var nama = $("#txt_nama").val();
+			var tanggalLahir = $("#date_tanggal_lahir").val();
+			var angkatan = $("#txt_angkatan").val();
 
-		
-		// Cek NRP harus angka
-		if (nrp === "" || isNaN(nrp)) {
-			alert("NRP harus berupa angka!");
-			return false;
+			if (nrp === "" || nama === "" || tanggalLahir === "" || angkatan === "") {
+				alert("Semua field harus diisi!");
+				return false;
+			}
+
+			if (nrp.length !== 9 || isNaN(nrp)) {
+				alert("NRP harus terdiri dari 9 digit angka.");
+				return false;
+			}
+
+			if (isNaN(angkatan) || angkatan.length !== 4) {
+				alert("Angkatan harus berupa tahun 4 digit.");
+				return false;
+			}
+
+			return true;
 		}
-
-		// Cek nama
-		if (nama === "") {
-			alert("Nama tidak boleh kosong!");
-			return false;
-		}
-		
-		// Cek gender
-		if (!gender) {
-			alert("Harap pilih gender!");
-			return false;
-		}
-
-		// Cek tanggal lahir
-		if (tanggal === "") {
-			alert("Tanggal lahir harus diisi!");
-			return false;
-		}
-
-
-		// Cek angkatan maksimal 2155
-		if (angkatan === "" || isNaN(angkatan) || parseInt(angkatan) > 2155) {
-			alert("Angkatan harus angka dan maksimal 2155!");
-			return false;
-		}
-
-		return true; 
-	}
 	</script>
 </body>
+
 </html>
