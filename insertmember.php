@@ -29,6 +29,8 @@ if (isset($_GET['search'])) {
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Tambah Anggota Grup</title>
     <link rel="stylesheet" href="style.css">
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+
 </head>
 
 <body>
@@ -69,6 +71,7 @@ if (isset($_GET['search'])) {
         </div>
 
     </div>
+    <script src="service/theme.js"></script>
     <script>
         function refreshWithSearch() {
             const search = document.getElementById("searchBox").value;

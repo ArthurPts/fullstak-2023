@@ -1,49 +1,50 @@
 <?php
-    require_once ("service/akun.php");
-    $objAkun = new akun();
+require_once("service/akun.php");
+$objAkun = new akun();
 
-    session_start();
+session_start();
 
-    if(!isset($_SESSION['login'])){
-        header("Location: login_temp.php");
-    }
+if (!isset($_SESSION['login'])) {
+    header("Location: login_temp.php");
+}
 
-    $username = $_SESSION['username'];
+$username = $_SESSION['username'];
 
-    if (isset($_POST['btnSubmit'])) {
-        $currentPassword = $_POST['currentPassword'];
-        $newPassword1 = $_POST['newPassword1'];
-        $newPassword2 = $_POST['newPassword2'];
-        $newPassword = password_hash($newPassword1, PASSWORD_DEFAULT);
+if (isset($_POST['btnSubmit'])) {
+    $currentPassword = $_POST['currentPassword'];
+    $newPassword1 = $_POST['newPassword1'];
+    $newPassword2 = $_POST['newPassword2'];
+    $newPassword = password_hash($newPassword1, PASSWORD_DEFAULT);
 
-        $storedPassword = $objAkun->getPassword($username);
+    $storedPassword = $objAkun->getPassword($username);
 
-        if (password_verify($currentPassword, $storedPassword)) {
-            if ($newPassword1 === $newPassword2) {
-                if ($objAkun->changePwd($username, $newPassword)) {
-                    echo "<script>
+    if (password_verify($currentPassword, $storedPassword)) {
+        if ($newPassword1 === $newPassword2) {
+            if ($objAkun->changePwd($username, $newPassword)) {
+                echo "<script>
                         alert('Update password berhasil!');
                     </script>";
-                } else {
-                    echo "<script>
-                        alert('Update password gagal!');
-                    </script>";
-                }
             } else {
                 echo "<script>
-                        alert('Password baru yang dimasukkan tidak cocok!');
+                        alert('Update password gagal!');
                     </script>";
             }
         } else {
-                echo "<script>
-                        alert('Password salah!');
+            echo "<script>
+                        alert('Password baru yang dimasukkan tidak cocok!');
                     </script>";
         }
+    } else {
+        echo "<script>
+                        alert('Password salah!');
+                    </script>";
     }
+}
 ?>
 
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -56,6 +57,7 @@
             align-items: center;
         }
     </style>
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
 </head>
 
 <body>
@@ -80,5 +82,7 @@
             <a href="index.php" class="back-btn">⬅ Kembali ke Home</a>
         </div>
     </div>
+    <script src="service/theme.js"></script>
 </body>
+
 </html>

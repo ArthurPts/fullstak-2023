@@ -26,6 +26,7 @@
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<title>Projek UTS - Edit Dosen</title>
     <link rel="stylesheet" href="style.css">
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
 </head>
 <body>
     <div class="style">
@@ -39,5 +40,6 @@
             </form>
         </div>
     </div>
+    <script src="service/theme.js"></script>
 </body>
 </html>

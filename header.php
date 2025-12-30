@@ -1,6 +1,43 @@
+<script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+
+<script>
+    function getSavedTheme() {
+        return localStorage.getItem('theme') || 'dark';
+    }
+
+    function applyTheme(theme) {
+        $('html').attr('data-theme', theme);
+        localStorage.setItem('theme', theme);
+
+        $('.theme-btn').removeClass('active');
+        $(`.theme-btn[data-theme="${theme}"]`).addClass('active');
+    }
+
+    $(document).ready(function() {
+        const savedTheme = getSavedTheme();
+
+        if ($('.theme-switcher').length === 0) {
+            const themeSwitcher = `
+            <div class="theme-switcher">
+                <button class="theme-btn" data-theme="dark" title="Dark Theme"></button>
+                <button class="theme-btn" data-theme="light" title="Light Theme"></button>
+            </div>
+        `;
+            $('body').append(themeSwitcher);
+        }
+
+        applyTheme(savedTheme);
+
+        $(document).on('click', '.theme-btn', function() {
+            const theme = $(this).data('theme');
+            applyTheme(theme);
+        });
+    });
+</script>
+
 <style>
     .navbar {
-        background: rgba(20, 20, 20, 0.9);
+        background: var(--bg-secondary);
         backdrop-filter: blur(8px);
         padding: 20px 0;
         display: flex;
@@ -9,20 +46,29 @@
         position: sticky;
         top: 0;
         z-index: 10;
-        box-shadow: 0 0 10px #ffffff33;
-        animation: glow 2s infinite alternate;
+        box-shadow: 0 0 10px var(--shadow-color);
+        animation: navGlow 2s infinite alternate;
+        transition: background 0.3s ease;
     }
 
-    @keyframes glow {
-        0%   { box-shadow: 0 0 6px #ffffff33; }
-        50%  { box-shadow: 0 0 12px #ffffff99; }
-        100% { box-shadow: 0 0 6px #ffffff33; }
+    @keyframes navGlow {
+        0% {
+            box-shadow: 0 0 6px var(--shadow-color);
+        }
+
+        50% {
+            box-shadow: 0 0 12px var(--glow-color);
+        }
+
+        100% {
+            box-shadow: 0 0 6px var(--shadow-color);
+        }
     }
 
     .navbar a {
-        color: #fff;
+        color: var(--text-primary);
         text-decoration: none;
-        margin: 0 25px; 
+        margin: 0 25px;
         font-family: 'Segoe UI', sans-serif;
         font-size: 18px;
         letter-spacing: 1px;
@@ -30,12 +76,12 @@
     }
 
     .navbar a:hover {
-        color: #00bcd4;
+        color: var(--glow-color);
         transform: scale(1.1);
     }
 
     .navbar h1 {
-        color: #fff;
+        color: var(--text-primary);
         margin: 0;
         font-size: 22px;
         letter-spacing: 1px;
@@ -50,28 +96,28 @@
 
 <?php
 if ($_SESSION['admin'] == 1) { ?>
-<div class="navbar">
-    <div class="nav-links">
-        <a href="index.php">🏠 Home</a>
-        <a href="tampilandosen.php">👨‍🏫 Dosen</a>
-        <a href="tampilanmahasiswa.php">🎓 Mahasiswa</a>
-        <?php if (isset($_SESSION['login'])): ?>
-            <a href="logout.php">🚪 Logout</a>
-        <?php endif; ?>
+    <div class="navbar">
+        <div class="nav-links">
+            <a href="index.php">🏠 Home</a>
+            <a href="tampilandosen.php">👨‍🏫 Dosen</a>
+            <a href="tampilanmahasiswa.php">🎓 Mahasiswa</a>
+            <?php if (isset($_SESSION['login'])): ?>
+                <a href="logout.php">🚪 Logout</a>
+            <?php endif; ?>
+        </div>
     </div>
-</div>
 
 <?php } else { ?>
 
-<div class="navbar">
-    <div class="nav-links">
-        <a href="index.php">🏠 Home</a>
-        <a href="tampilangrup.php?search=5"> 🔍 Cari Grup</a>
-        <a href="tampilangrup.php?list=5"> 👨‍🏫 Grupmu</a>
-        <?php if (isset($_SESSION['login'])): ?>
-            <a href="logout.php">🚪 Logout</a>
-        <?php endif; ?>
+    <div class="navbar">
+        <div class="nav-links">
+            <a href="index.php">🏠 Home</a>
+            <a href="tampilangrup.php?search=5"> 🔍 Cari Grup</a>
+            <a href="tampilangrup.php?list=5"> 👨‍🏫 Grupmu</a>
+            <?php if (isset($_SESSION['login'])): ?>
+                <a href="logout.php">🚪 Logout</a>
+            <?php endif; ?>
+        </div>
     </div>
-</div>
 
 <?php } ?>
