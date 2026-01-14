@@ -11,7 +11,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $deskripsi = $_POST['deskripsi'];
     $jenis = $_POST['jenis'];
 
-    $objGrup->updateGrup($nama, $deskripsi, $jenis, $_GET['id']);  // sesuaikan nama fungsi update
+    $objGrup->updateGrup($nama, $deskripsi, $jenis, $_GET['id']);
     header("Location: detilgrup.php?id=" . $_GET['id']);
     exit();
 }

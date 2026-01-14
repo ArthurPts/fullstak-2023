@@ -40,7 +40,6 @@
 	$result = $objDosen->getAllDosen($npk);
 
 	if ($result->num_rows > 0) {
-		// NPK sudah ada → tampilkan alert dan kembali ke form
 		echo "<script>
 				alert('NPK sudah terdaftar!');
 				window.location.href = 'insertdosen.php';

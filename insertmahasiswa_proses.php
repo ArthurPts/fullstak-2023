@@ -25,7 +25,6 @@
 	$check = $objMahasiswa->getAllMahasiswa($nrp);
 
 	if ($check->num_rows > 0) {
-		// NRP sudah ada → tampilkan alert dan kembali ke form
 		echo "<script>
 				alert('NRP sudah terdaftar!');
 				window.location.href = 'insertmahasiswa.php';

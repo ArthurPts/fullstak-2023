@@ -18,7 +18,6 @@ if (isset($_GET['search'])) {
     $result = $objGrup->nonMemberList($_GET['id']);
 }
 
-//$nonMember = $result->fetch_assoc();
 ?>
 
 <!DOCTYPE html>

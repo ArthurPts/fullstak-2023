@@ -44,8 +44,6 @@ session_start();
 				<a href="editpassword.php"><button>GANTI PASSWORD</button></a>
 				<a class="logout" href="logout.php">Logout</a>
 
-				<!-- <a class="logout" href="logout.php">Logout</a> -->
-
 			<?php }
 			?>
 		</div>

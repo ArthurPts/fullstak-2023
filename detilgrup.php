@@ -160,7 +160,7 @@ $isPembuatGrup = ($_SESSION['username'] == $info['username_pembuat']);
             </div>
             
             <?php
-            if ($objGrup->checkMemberGrup($_SESSION['username'],$thisGrupID)){ // hanya member yang bisa liat thread
+            if ($objGrup->checkMemberGrup($_SESSION['username'],$thisGrupID)){ 
             ?>
                 <div style="width: 100%;">
                     <table border="1" style="margin: 0 auto; width:100%;">
